@@ -10,7 +10,7 @@ body {
 
 .main-section {
   width: 1280px;
-  height: 720px;
+  min-height: 720px;
   background-color: #fafafc;
 }
 
@@ -57,6 +57,7 @@ header .container {
   min-height: 228px;
   box-shadow: 0 8px 12px 0 rgba(11, 12, 13, 0.08),
     0 16px 24px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
+  margin-bottom: 24px;
 }
 
 /*=====Блок ввода названия заметки=====*/
@@ -185,13 +186,52 @@ textarea {
   cursor: pointer;
 }
 
-.notes {
+.favorite-notes {
   display: flex;
-  justify-content: center;
   align-items: center;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 150%;
-  text-align: center;
+  width: 254px;
+  height: 24px;
+  font-family: inherit;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 200%;
   color: #000;
+  margin-bottom: 12px;
+}
+.favorite-notes-checkbox {
+  margin-left: 8px;
+}
+
+.notes {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.new-note {
+  display: flex;
+  flex-direction: column;
+  width: 368px;
+  height: 100%;
+}
+
+.new-note-title {
+  height: 48px;
+  width: 100%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.new-note-description {
+  font-family: inherit;
+  padding: 12px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: #000;
+  background-color: #ffffff;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0 4px 8px 0 rgba(11, 12, 13, 0.08),
+    0 8px 16px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
 }
