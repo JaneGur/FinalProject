@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <section class="main-section">
+      <header>
+        <div class="container">
+          <div class="logo-img">
+            <img src="/assets/📝Notes.png" alt="Logo" />
+          </div>
+          <div class="notes-quantity">
+            <img src="/assets/notes.png" alt="Notes quantity" />
+            <span>Всего заметок: 0</span>
+          </div>
+        </div>
+      </header>
+      <div class="container">
+        <form method="get" class="note-entry-block">
+          <div class="note-name-block">
+            <label
+              for="note-name-block-title-input"
+              class="note-name-block-title"
+              >Название заметки
+              <input
+                type="text"
+                placeholder="Напишите название новой заметки..."
+                class="note-name-block-title-input"
+                id="note-name-block-title-input"
+              />
+            </label>
+          </div>
+          <div class="note-description-block">
+            <label for="note-name-input" class="note-name"
+              >Описание новой заметки
+              <textarea
+                name=""
+                id=""
+                placeholder="Напишите описание новой заметки..."
+                class="note-name-input"
+                id="note-name-input"
+              ></textarea>
+            </label>
+            <div class="note-color">
+              <div class="note-color-title">Выберите цвет заметки</div>
+              <div class="radio-container">
+                <label class="radio-label" for="yellow">
+                  <input
+                    class="radio yellow"
+                    type="radio"
+                    name="browser"
+                    value="yellow"
+                    id="yellow"
+                  />
+                </label>
+                <label class="radio-label" for="green">
+                  <input
+                    class="radio green"
+                    type="radio"
+                    name="browser"
+                    value="green"
+                    id="green"
+                  />
+                </label>
+                <label class="radio-label" for="blue">
+                  <input
+                    class="radio blue"
+                    type="radio"
+                    name="browser"
+                    value="blue"
+                    id="blue"
+                  />
+                </label>
+                <label class="radio-label" for="red">
+                  <input
+                    class="radio red"
+                    type="radio"
+                    name="browser"
+                    value="red"
+                    id="red"
+                  />
+                </label>
+                <label class="radio-label" for="purple">
+                  <input
+                    class="radio purple"
+                    type="radio"
+                    name="browser"
+                    value="purple"
+                    id="purple"
+                  />
+                </label>
+              </div>
+              <button class="note-color-button">+ Добавить заметку</button>
+            </div>
+          </div>
+        </form>
+        <div class="notes"></div>
+      </div>
+    </section>
+    <script src="/js.js"></script>
+  </body>
+</html>
