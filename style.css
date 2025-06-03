@@ -186,6 +186,12 @@ textarea {
   cursor: pointer;
 }
 
+.block-favorite-notes {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
 .favorite-notes {
   display: flex;
   align-items: center;
@@ -196,11 +202,12 @@ textarea {
   font-size: 12px;
   line-height: 200%;
   color: #000;
-  margin-bottom: 12px;
 }
 .favorite-notes-checkbox {
   margin-left: 8px;
 }
+
+/*=====Добавление новых заметок=====*/
 
 .notes {
   display: grid;
