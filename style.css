@@ -18,6 +18,8 @@ body {
   padding: 0 64px;
 }
 
+/*=====Стили хедера=====*/
+
 header {
   margin-bottom: 24px;
   background-color: #fff;
@@ -33,11 +35,17 @@ header .container {
     0 0 1px 0 rgba(11, 12, 13, 0.24);
 }
 
+/*=====Счетчик заметок=====*/
+
 .notes-quantity {
   display: flex;
   align-items: center;
   gap: 12px;
 }
+
+/*=====Стили=====*/
+
+/*=====Блок ввода параметров и добавления заметки=====*/
 
 .note-entry-block {
   display: flex;
@@ -51,96 +59,95 @@ header .container {
     0 16px 24px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
 }
 
+/*=====Блок ввода названия заметки=====*/
+
 .note-name-block {
   display: flex;
   flex-direction: column;
   max-width: 344px;
   min-height: 60px;
+  margin-bottom: 12px;
 }
 
-.note-name-block-title {
+label,
+input,
+.note-color-title {
   font-weight: 400;
   font-size: 12px;
   line-height: 200%;
   color: #919191;
 }
 
-.note-name-block-title-input {
+input::placeholder,
+textarea::placeholder {
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 171%;
+  color: #919191;
+}
+
+input[type="text"] {
+  font-family: inherit;
   border: 1px solid #e8e8e8;
   border-radius: 10px;
   padding: 6px 12px;
   width: 100%;
   min-height: 36px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 171%;
-  color: #919191;
 }
+
+/*=====Блок ввода описания заметки=====*/
 
 .note-name {
   display: flex;
   flex-direction: column;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 200%;
-  color: #919191;
   min-width: 848px;
   min-height: 108px;
+  margin-right: 24px;
 }
 
-.note-name-input {
+textarea {
+  font-family: inherit;
   border: 1px solid #e8e8e8;
   border-radius: 10px;
   padding: 6px 12px;
   max-width: 100%;
   min-height: 84px;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 171%;
-  color: #919191;
+  resize: none;
 }
 
 .note-description-block {
   display: flex;
-  gap: 24px;
-  flex-wrap: wrap;
-  flex-shrink: 2;
+  /* flex-wrap: wrap;
+  flex-shrink: 2; */
 }
+
+/*=====Блок выбора цвета заметки=====*/
 
 .note-color {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
-  font-weight: 400;
-  font-size: 12px;
-  line-height: 200%;
-  color: #919191;
-}
-
-.radio-set {
+  justify-content: space-between;
   width: 232px;
   height: 108px;
 }
 
 .radio-container {
   display: flex;
-  gap: 14px;
+  max-width: 212px;
+  min-height: 36px;
+  justify-content: space-around;
 }
 
 .radio {
   appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
   display: inline-block;
   position: relative;
   height: 24px;
   width: 24px;
   border-radius: 20px;
-  margin-right: 5px;
   box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
   cursor: pointer;
   outline: none;
-  box-sizing: border-box;
   transition: 0.5s all;
 }
 
@@ -166,9 +173,10 @@ header .container {
 
 .note-color-button {
   border-radius: 10px;
+  border-color: transparent;
   padding: 6px 24px;
-  width: 232px;
-  height: 36px;
+  width: 100%;
+  min-height: 36px;
   background: #457cdc;
   font-weight: 500;
   font-size: 16px;
@@ -181,7 +189,6 @@ header .container {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: var(--font-family);
   font-weight: 500;
   font-size: 16px;
   line-height: 150%;
