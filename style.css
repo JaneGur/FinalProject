@@ -242,3 +242,22 @@ textarea {
   box-shadow: 0 4px 8px 0 rgba(11, 12, 13, 0.08),
     0 8px 16px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
 }
+
+.new-note-title-name {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  align-items: center;
+}
+.new-note-title-name p {
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  color: #292515;
+}
+
+.new-note-title-name div {
+  display: flex;
+  gap: 12px;
+}
