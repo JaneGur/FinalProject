@@ -119,8 +119,7 @@ textarea {
 
 .note-description-block {
   display: flex;
-  /* flex-wrap: wrap;
-  flex-shrink: 2; */
+  flex-wrap: wrap;
 }
 
 /*=====Блок выбора цвета заметки=====*/
@@ -212,7 +211,7 @@ textarea {
 
 .notes {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 24px;
 }
 
