@@ -206,7 +206,7 @@ textarea {
 .favorite-notes {
   display: flex;
   align-items: center;
-  max-width: 254px;
+  max-width: 100%;
   min-height: 24px;
   font-family: inherit;
   font-weight: 400;
