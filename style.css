@@ -104,12 +104,18 @@ input[type="text"] {
 
 /*=====Блок ввода описания заметки=====*/
 
+.note-description-block {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .note-name {
   display: flex;
   flex-direction: column;
   width: 848px;
   min-height: 108px;
   margin-right: 24px;
+  margin-bottom: 12px;
 }
 
 textarea {
@@ -120,11 +126,6 @@ textarea {
   max-width: 100%;
   min-height: 84px;
   resize: none;
-}
-
-.note-description-block {
-  display: flex;
-  flex-wrap: wrap;
 }
 
 /*=====Блок выбора цвета заметки=====*/
