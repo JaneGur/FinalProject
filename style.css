@@ -179,6 +179,8 @@ textarea {
   background-color: #e77df3;
 }
 
+/*=====Кнопка добавления заметки=====*/
+
 .note-color-button {
   border-radius: 10px;
   border-color: transparent;
@@ -193,6 +195,8 @@ textarea {
   cursor: pointer;
 }
 
+/*=====Избранные заметки=====*/
+
 .block-favorite-notes {
   display: flex;
   justify-content: flex-end;
@@ -202,8 +206,8 @@ textarea {
 .favorite-notes {
   display: flex;
   align-items: center;
-  width: 254px;
-  height: 24px;
+  max-width: 254px;
+  min-height: 24px;
   font-family: inherit;
   font-weight: 400;
   font-size: 12px;
