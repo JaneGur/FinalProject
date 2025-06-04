@@ -12,6 +12,7 @@ body {
   width: 1280px;
   min-height: 720px;
   background-color: #fafafc;
+  margin: 0 auto;
 }
 
 .container {
@@ -53,7 +54,7 @@ header .container {
   background-color: #fff;
   border-radius: 4px;
   padding: 24px;
-  max-width: 1152px;
+  max-width: 100%;
   min-height: 228px;
   box-shadow: 0 8px 12px 0 rgba(11, 12, 13, 0.08),
     0 16px 24px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
