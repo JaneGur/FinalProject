@@ -19,28 +19,38 @@ const MOCK_TASKS = [
 const model = {
   notes: [],
   counterOfTask: 0,
-  addTask(noteTitle, noteDescription, noteColor) {
-    // const note = {
-    //   id: new Date().getTime(),
-    //   noteTitle: noteTitle,
-    //   noteDescription: noteDescription,
-    //   noteColor: noteColor,
-    //   isFavourite: false,
-    // };
-    // this.notes.push(note);
-    // view.renderNotes(note);
-    alert(noteColor);
+  addNote(noteTitle, noteDescription, noteColor) {
+    const note = {
+      id: new Date().getTime(),
+      noteTitle: noteTitle,
+      noteDescription: noteDescription,
+      noteColor: noteColor,
+      isFavourite: false,
+    };
+    this.notes.push(note);
+    view.renderNotes(note);
+    // alert(noteColor);
+  },
+  addTooltipError() {
+    view.TooltipErrorView();
   },
 };
 // отображение данных: рендер списка задач, размещение обработчиков событий
 const view = {
   init() {
-    this.renderNotes({
-      noteTitle: "Изучить паттерн MVC",
-      noteDescription: "Изучить паттерн MVC",
-      noteColor: "blue",
-      isFavourite: false,
-    });
+    // this.renderNotes({
+    //   noteTitle:
+    //     "Изучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVC",
+    //   noteDescription: "Изучить паттерн MVC",
+    //   noteColor: "blue",
+    //   isFavourite: false,
+    // });
+    // this.renderEmptyNote();
+    // this.renderFavouriteNoteCheckbox();
+    this.renderTooltipError();
+    this.renderTooltipNoteisDelete();
+    this.renderTooltipNoteisAdded();
+
     const noteEntryBlock = document.querySelector(".note-entry-block");
     const noteNameBlock = document.querySelector(
       "#note-name-block-title-input"
@@ -74,14 +84,18 @@ const view = {
         noteColor = radioPurple.value;
       }
 
-      controller.addTask(noteTitle, noteDescription, noteColor); // Вызываем метод addTask контроллера
+      controller.addNote(noteTitle, noteDescription, noteColor);
 
       noteNameBlock.value = ""; // Очищаем поле ввода
       noteNameDescription.value = "";
     });
     noteBlockImg.addEventListener("click", (event) => {
       if (event.target.classList.contains("favourite-note-img")) {
+        const favouriteNoteImg = document.querySelector(".favourite-note-img");
         alert("я нажала картинку с сердечком");
+        if ((favouriteNoteImg.src = "assets/heart inactive.png")) {
+          favouriteNoteImg.src = "assets/heart active.png";
+        }
       }
       if (event.target.classList.contains("trash-img")) {
         alert("я нажала картинку с мусором");
@@ -118,9 +132,9 @@ const view = {
     newNoteTitleName.append(newNoteTitleParagraph, newNoteTitleIconsBlock);
     const newNoteDescription = document.createElement("p");
     newNoteDescription.classList.add("new-note-description");
-    newNoteDescription.innerHTML = `${note.noteDescription}`;
+    newNoteDescription.textContent = note.noteDescription;
     newNote.append(newNoteTitle, newNoteDescription);
-    notes.append(newNote);
+    notes.prepend(newNote);
   },
 
   renderFavouriteNotes(note) {
@@ -155,10 +169,11 @@ const view = {
     emptyNote.textContent =
       "У вас ещё нет ни одной заметки. Заполните поля выше и создайте свою первую заметку!";
     notes.append(emptyNote);
+    emptyNote.append(notes);
   },
 
   renderFavouriteNoteCheckbox() {
-    const container = document.querySelector(".container");
+    const noteEntryBlock = document.querySelector(".note-entry-block");
     const blockFavoriteNotes = document.createElement("div");
     blockFavoriteNotes.classList.add("block-favorite-notes");
     blockFavoriteNotes.innerHTML = `<label class="favorite-notes">
@@ -173,21 +188,93 @@ const view = {
               >Показать только избранные заметки</span
             >
           </label>`;
-    container.append(blockFavoriteNotes);
+    noteEntryBlock.after(blockFavoriteNotes);
   },
 
-  renderTitleLengthWarning() {
-    const mainSection = document.querySelector(".main-section");
-    const TitleLengthWarning = document.createElement("div");
-    TitleLengthWarning.classList.add("title-length-warning");
-    mainSection.append(TitleLengthWarning);
+  renderTooltipError() {
+    const TooltipError = document.createElement("div");
+    TooltipError.classList.add("tooltip", "tooltip-error", "invisible");
+    const noteEntryBlock = document.querySelector(".note-entry-block");
+    const TooltipErrorMessage = document.createElement("span");
+    TooltipErrorMessage.textContent =
+      "Максимальная длина заголовка - 50 символов";
+    const TooltipErrorIcon = document.createElement("img");
+    TooltipErrorIcon.src = "assets/warning.png";
+    TooltipError.append(TooltipErrorIcon, TooltipErrorMessage);
+    noteEntryBlock.after(TooltipError);
+  },
+
+  renderTooltipNoteisAdded() {
+    const TooltipNoteisAdded = document.createElement("div");
+    TooltipNoteisAdded.classList.add(
+      "tooltip",
+      "tooltip-note-is-added",
+      "invisible"
+    );
+    const noteEntryBlock = document.querySelector(".note-entry-block");
+    const TooltipNoteisAddedMessage = document.createElement("span");
+    TooltipNoteisAddedMessage.textContent = "Заметка добавлена";
+    const TooltipNoteisAddedIcon = document.createElement("img");
+    TooltipNoteisAddedIcon.src = "assets/Done.png";
+    TooltipNoteisAdded.append(
+      TooltipNoteisAddedIcon,
+      TooltipNoteisAddedMessage
+    );
+    noteEntryBlock.after(TooltipNoteisAdded);
+  },
+
+  renderTooltipNoteisDelete() {
+    const TooltipNoteisDelete = document.createElement("div");
+    TooltipNoteisDelete.classList.add(
+      "tooltip",
+      "tooltip-note-is-delete",
+      "invisible"
+    );
+    const noteEntryBlock = document.querySelector(".note-entry-block");
+    const TooltipNoteisDeleteMessage = document.createElement("span");
+    TooltipNoteisDeleteMessage.textContent = "Заметка удалена!";
+    const TooltipNoteisDeleteIcon = document.createElement("img");
+    TooltipNoteisDeleteIcon.src = "assets/cancel.png";
+    TooltipNoteisDelete.append(
+      TooltipNoteisDeleteIcon,
+      TooltipNoteisDeleteMessage
+    );
+    noteEntryBlock.after(TooltipNoteisDelete);
+  },
+
+  TooltipErrorView() {
+    const tooltipError = document.querySelector(".tooltip-error");
+    tooltipError.classList.toggle("invisible");
+    setTimeout(() => {
+      tooltipError.classList.toggle("invisible");
+    }, 3000);
+  },
+
+  TooltipNoteisAddView() {
+    const TooltipNoteisAdd = document.querySelector(".tooltip-note-is-added");
+    TooltipNoteisAdd.classList.toggle("invisible");
+    setTimeout(() => {
+      TooltipNoteisAdd.classList.toggle("invisible");
+    }, 3000);
+  },
+
+  TooltipNoteisDeleteView() {
+    const TooltipNoteisDelete = document.querySelector(
+      ".tooltip-note-is-delete"
+    );
+    TooltipNoteisDelete.classList.toggle("invisible");
+    setTimeout(() => {
+      TooltipNoteisDelete.classList.toggle("invisible");
+    }, 3000);
   },
 };
 
 // обработка действий пользователя, обновление модели
 const controller = {
-  addTask(noteTitle, noteDescription, noteColor) {
-    model.addTask(noteTitle, noteDescription, noteColor);
+  addNote(noteTitle, noteDescription, noteColor) {
+    String(noteTitle).length > 50
+      ? model.addTooltipError()
+      : model.addNote(noteTitle, noteDescription, noteColor);
   },
 };
 

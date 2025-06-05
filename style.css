@@ -240,7 +240,8 @@ textarea {
 
 .notes {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(368px, 1fr));
+  /* grid-template-columns: repeat(auto-fit, minmax(368px, 1fr)); */
+  grid-template-columns: repeat(3, 1fr);
   gap: 24px;
 }
 
@@ -272,11 +273,10 @@ textarea {
     0 8px 16px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
 }
 
-.new-note-description p {
-  max-width: 100%;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  white-space: normal;
+.new-note-description {
+  width: 100%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .new-note-title-name {
@@ -291,6 +291,9 @@ textarea {
   font-size: 16px;
   line-height: 150%;
   color: #292515;
+  width: 85%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
 }
 
 .new-note-title-name div {
@@ -304,19 +307,36 @@ textarea {
   cursor: pointer;
 }
 
-/* .title-length-warning {
+.tooltip {
   position: absolute;
-
+  bottom: 40px;
+  right: 79px;
+  border-radius: 10px;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: inherit;
   font-weight: 500;
   font-size: 14px;
   line-height: 171%;
   color: #fff;
-  border-radius: 10px;
-  padding: 12px 24px;
-  width: 427px;
-  height: 48px;
+  z-index: 1000;
   box-shadow: 0 8px 12px 0 rgba(11, 12, 13, 0.08),
     0 16px 24px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
+}
+.tooltip-error {
   background: #f23d5b;
-} */
+  width: 427px;
+  height: 48px;
+}
+.tooltip-note-is-added,
+.tooltip-note-is-delete {
+  background: #47b27d;
+  width: 230px;
+  height: 48px;
+}
+
+.invisible {
+  display: none;
+}
