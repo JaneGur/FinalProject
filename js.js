@@ -1,20 +1,3 @@
-const MOCK_TASKS = [
-  {
-    id: 1,
-    noteTitle: "Изучить паттерн MVC",
-    noteDescription: "Изучить паттерн MVC",
-    noteColor: "yellow",
-    isFavourite: false,
-  },
-  {
-    id: 2,
-    noteTitle: "Изучить паттерн MVC",
-    noteDescription: "Изучить паттерн MVC",
-    noteColor: "green",
-    isFavourite: false,
-  },
-];
-
 // хранение данных, бизнес-логика
 const model = {
   notes: [],
@@ -27,12 +10,49 @@ const model = {
       noteColor: noteColor,
       isFavourite: false,
     };
+    if (this.counterOfTask === 0) {
+      view.renderFavouriteNoteCheckbox();
+      view.EmptyNoteView();
+    }
+    this.counterOfTask += 1;
     this.notes.push(note);
     view.renderNotes(note);
-    // alert(noteColor);
+    view.renderQuantityofNotes(this.counterOfTask);
+    view.TooltipNoteisAddView();
   },
+
   addTooltipError() {
     view.TooltipErrorView();
+  },
+  addTooltipErrorFieldEmpty() {
+    view.TooltipErrorFieldEmptyView();
+  },
+  addTooltipNoteisAdd() {
+    view.TooltipNoteisAddView();
+  },
+  addTooltipNoteisDelete() {
+    view.TooltipNoteisDeleteView();
+  },
+
+  addFavouriteNote(noteId) {
+    this.notes = this.notes.map((item) => {
+      if (+item.id == +noteId) {
+        item.isFavourite = !item.isFavourite;
+        view.favouriteNoteView(item);
+      }
+      return item;
+    });
+  },
+  deleteNote(noteId) {
+    this.counterOfTask -= 1;
+    this.notes.forEach((item) => {
+      if (+item.id == +noteId) {
+        alert(noteId);
+        view.deleteNote(item);
+      }
+      return item;
+    });
+    view.renderQuantityofNotes(this.counterOfTask);
   },
 };
 // отображение данных: рендер списка задач, размещение обработчиков событий
@@ -45,11 +65,11 @@ const view = {
     //   noteColor: "blue",
     //   isFavourite: false,
     // });
-    // this.renderEmptyNote();
-    // this.renderFavouriteNoteCheckbox();
+    this.renderEmptyNote();
     this.renderTooltipError();
     this.renderTooltipNoteisDelete();
     this.renderTooltipNoteisAdded();
+    this.renderTooltipErrorFieldEmpty();
 
     const noteEntryBlock = document.querySelector(".note-entry-block");
     const noteNameBlock = document.querySelector(
@@ -91,14 +111,13 @@ const view = {
     });
     noteBlockImg.addEventListener("click", (event) => {
       if (event.target.classList.contains("favourite-note-img")) {
-        const favouriteNoteImg = document.querySelector(".favourite-note-img");
-        alert("я нажала картинку с сердечком");
-        if ((favouriteNoteImg.src = "assets/heart inactive.png")) {
-          favouriteNoteImg.src = "assets/heart active.png";
-        }
+        const noteId = +event.target.id;
+        controller.addFavouriteNote(noteId);
       }
+
       if (event.target.classList.contains("trash-img")) {
-        alert("я нажала картинку с мусором");
+        const noteId = +event.target.id;
+        controller.deleteNote(noteId);
       }
     });
     blockFavoriteNotesCheckBox.addEventListener("click", (event) => {
@@ -111,20 +130,28 @@ const view = {
     const notes = document.querySelector(".notes");
     const newNote = document.createElement("div");
     newNote.classList.add("new-note");
+    newNote.id = note.id;
     const newNoteTitle = document.createElement("div");
     newNoteTitle.classList.add("new-note-title", note.noteColor);
+    newNoteTitle.id = note.id;
     newNote.append(newNoteTitle);
     const newNoteTitleName = document.createElement("div");
     newNoteTitleName.classList.add("new-note-title-name");
+    newNoteTitleName.id = note.id;
     newNoteTitle.append(newNoteTitleName);
     const newNoteTitleParagraph = document.createElement("p");
     newNoteTitleParagraph.textContent = note.noteTitle;
     const newNoteTitleIconsBlock = document.createElement("div");
+    newNoteTitleIconsBlock.id = note.id;
     const favouriteNoteImg = document.createElement("img");
+    favouriteNoteImg.id = note.id;
     favouriteNoteImg.classList.add("favourite-note-img");
-    favouriteNoteImg.src = "assets/heart inactive.png";
+    !note.isFavourite
+      ? (favouriteNoteImg.src = "assets/heart inactive.png")
+      : (favouriteNoteImg.src = "assets/heart active.png");
     favouriteNoteImg.alt = "Favorite notes";
     const trashImg = document.createElement("img");
+    trashImg.id = note.id;
     trashImg.classList.add("trash-img");
     trashImg.src = "assets/trash.png";
     trashImg.alt = "Delete note";
@@ -141,25 +168,36 @@ const view = {
     const notes = document.querySelector(".notes");
     const newNote = document.createElement("div");
     newNote.classList.add("new-note");
+    newNote.id = note.id;
     const newNoteTitle = document.createElement("div");
     newNoteTitle.classList.add("new-note-title", note.noteColor);
+    newNoteTitle.id = note.id;
     newNote.append(newNoteTitle);
     const newNoteTitleName = document.createElement("div");
     newNoteTitleName.classList.add("new-note-title-name");
+    newNoteTitleName.id = note.id;
     newNoteTitle.append(newNoteTitleName);
-    newNoteTitleName.innerHTML = `<p>${note.noteTitle}</p>
-                <div>
-                  <a href="#"
-                    ><img src="assets/heart active.png" alt="Favorite notes"
-                  /></a>
-                  <a href="#"
-                    ><img src="assets/trash.png" alt="Delete note"
-                  /></a></div>`;
+    const newNoteTitleParagraph = document.createElement("p");
+    newNoteTitleParagraph.textContent = note.noteTitle;
+    const newNoteTitleIconsBlock = document.createElement("div");
+    newNoteTitleIconsBlock.id = note.id;
+    const favouriteNoteImg = document.createElement("img");
+    favouriteNoteImg.id = note.id;
+    favouriteNoteImg.classList.add("favourite-note-img");
+    favouriteNoteImg.src = "assets/heart active.png";
+    favouriteNoteImg.alt = "Favorite notes";
+    const trashImg = document.createElement("img");
+    trashImg.id = note.id;
+    trashImg.classList.add("trash-img");
+    trashImg.src = "assets/trash.png";
+    trashImg.alt = "Delete note";
+    newNoteTitleIconsBlock.append(favouriteNoteImg, trashImg);
+    newNoteTitleName.append(newNoteTitleParagraph, newNoteTitleIconsBlock);
     const newNoteDescription = document.createElement("p");
     newNoteDescription.classList.add("new-note-description");
-    newNoteDescription.innerHTML = `${note.noteDescription}`;
+    newNoteDescription.textContent = note.noteDescription;
     newNote.append(newNoteTitle, newNoteDescription);
-    notes.append(newNote);
+    notes.prepend(newNote);
   },
 
   renderEmptyNote() {
@@ -169,7 +207,6 @@ const view = {
     emptyNote.textContent =
       "У вас ещё нет ни одной заметки. Заполните поля выше и создайте свою первую заметку!";
     notes.append(emptyNote);
-    emptyNote.append(notes);
   },
 
   renderFavouriteNoteCheckbox() {
@@ -191,6 +228,12 @@ const view = {
     noteEntryBlock.after(blockFavoriteNotes);
   },
 
+  renderQuantityofNotes(counterOfTask) {
+    const notesQuantity = document.querySelector(".notes-quantity");
+    notesQuantity.innerHTML = `<img src="assets/notes.png" alt="Notes quantity" />
+              <span>Всего заметок: <b>${counterOfTask}</b></span>`;
+  },
+
   renderTooltipError() {
     const TooltipError = document.createElement("div");
     TooltipError.classList.add("tooltip", "tooltip-error", "invisible");
@@ -202,6 +245,25 @@ const view = {
     TooltipErrorIcon.src = "assets/warning.png";
     TooltipError.append(TooltipErrorIcon, TooltipErrorMessage);
     noteEntryBlock.after(TooltipError);
+  },
+
+  renderTooltipErrorFieldEmpty() {
+    const TooltipErrorFieldEmpty = document.createElement("div");
+    TooltipErrorFieldEmpty.classList.add(
+      "tooltip",
+      "tooltip-error-field-empty",
+      "invisible"
+    );
+    const noteEntryBlock = document.querySelector(".note-entry-block");
+    const TooltipErrorFieldEmptyMessage = document.createElement("span");
+    TooltipErrorFieldEmptyMessage.textContent = "Заполните все поля!";
+    const TooltipErrorFieldEmptyIcon = document.createElement("img");
+    TooltipErrorFieldEmptyIcon.src = "assets/warning.png";
+    TooltipErrorFieldEmpty.append(
+      TooltipErrorFieldEmptyIcon,
+      TooltipErrorFieldEmptyMessage
+    );
+    noteEntryBlock.after(TooltipErrorFieldEmpty);
   },
 
   renderTooltipNoteisAdded() {
@@ -250,6 +312,16 @@ const view = {
     }, 3000);
   },
 
+  TooltipErrorFieldEmptyView() {
+    const TooltipErrorFieldEmptyView = document.querySelector(
+      ".tooltip-error-field-empty"
+    );
+    TooltipErrorFieldEmptyView.classList.toggle("invisible");
+    setTimeout(() => {
+      TooltipErrorFieldEmptyView.classList.toggle("invisible");
+    }, 3000);
+  },
+
   TooltipNoteisAddView() {
     const TooltipNoteisAdd = document.querySelector(".tooltip-note-is-added");
     TooltipNoteisAdd.classList.toggle("invisible");
@@ -267,14 +339,51 @@ const view = {
       TooltipNoteisDelete.classList.toggle("invisible");
     }, 3000);
   },
+
+  EmptyNoteView() {
+    const emptyNote = document.querySelector(".empty-note");
+    emptyNote.classList.toggle("invisible");
+  },
+
+  favouriteNoteView(note) {
+    const favouriteNote = document.querySelectorAll(".favourite-note-img");
+    favouriteNote.forEach((item) => {
+      if (+item.getAttribute("id") === note.id) {
+        note.isFavourite
+          ? (item.src = "assets/heart active.png")
+          : (item.src = "assets/heart inactive.png");
+      }
+    });
+  },
+  deleteNote(note) {
+    const deleteNote = document.querySelectorAll(".new-note");
+    deleteNote.forEach((item) => {
+      if (+item.getAttribute("id") === note.id) {
+        item.remove();
+      }
+    });
+  },
 };
 
 // обработка действий пользователя, обновление модели
 const controller = {
   addNote(noteTitle, noteDescription, noteColor) {
-    String(noteTitle).length > 50
-      ? model.addTooltipError()
-      : model.addNote(noteTitle, noteDescription, noteColor);
+    if (
+      String(noteTitle).trim().length === 0 ||
+      String(noteDescription).trim().length === 0
+    ) {
+      model.addTooltipErrorFieldEmpty();
+    } else {
+      String(noteTitle).trim().length > 50
+        ? model.addTooltipError()
+        : model.addNote(noteTitle, noteDescription, noteColor);
+    }
+  },
+  addFavouriteNote(noteId) {
+    model.addFavouriteNote(noteId);
+  },
+  deleteNote(noteId) {
+    model.deleteNote(noteId);
   },
 };
 

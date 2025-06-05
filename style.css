@@ -240,8 +240,8 @@ textarea {
 
 .notes {
   display: grid;
-  /* grid-template-columns: repeat(auto-fit, minmax(368px, 1fr)); */
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(368px, 1fr));
+  /* grid-template-columns: repeat(3, 1fr); */
   gap: 24px;
 }
 
@@ -315,6 +315,7 @@ textarea {
   padding: 12px 24px;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   font-family: inherit;
   font-weight: 500;
@@ -328,6 +329,12 @@ textarea {
 .tooltip-error {
   background: #f23d5b;
   width: 427px;
+  height: 48px;
+}
+
+.tooltip-error-field-empty {
+  background: #f23d5b;
+  width: 300px;
   height: 48px;
 }
 .tooltip-note-is-added,
