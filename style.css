@@ -9,6 +9,7 @@ body {
 }
 
 .main-section {
+  position: relative;
   max-width: 1280px;
   min-height: 720px;
   background-color: #fafafc;
@@ -159,6 +160,11 @@ textarea {
   transition: 0.5s all;
 }
 
+.radio:checked {
+  transform: scale(1.2);
+  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
+}
+
 .yellow {
   background-color: #f3db7d;
 }
@@ -218,6 +224,18 @@ textarea {
   margin-left: 8px;
 }
 
+/*=====Сообщение об отсутствии заметок=====*/
+
+.empty-note {
+  margin: 138px auto 0;
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 150%;
+  text-align: center;
+  color: #000;
+}
+
 /*=====Добавление новых заметок=====*/
 
 .notes {
@@ -234,7 +252,7 @@ textarea {
 }
 
 .new-note-title {
-  height: 48px;
+  min-height: 48px;
   width: 100%;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -252,6 +270,13 @@ textarea {
   border-bottom-right-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(11, 12, 13, 0.08),
     0 8px 16px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
+}
+
+.new-note-description p {
+  max-width: 100%;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  white-space: normal;
 }
 
 .new-note-title-name {
@@ -272,3 +297,26 @@ textarea {
   display: flex;
   gap: 12px;
 }
+
+.favourite-note-img,
+.trash-img,
+.checkbox {
+  cursor: pointer;
+}
+
+/* .title-length-warning {
+  position: absolute;
+
+  font-family: inherit;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 171%;
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 24px;
+  width: 427px;
+  height: 48px;
+  box-shadow: 0 8px 12px 0 rgba(11, 12, 13, 0.08),
+    0 16px 24px 0 rgba(11, 12, 13, 0.04), 0 1px 2px 0 rgba(11, 12, 13, 0.08);
+  background: #f23d5b;
+} */
