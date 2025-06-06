@@ -1,8 +1,28 @@
 // хранение данных, бизнес-логика
+const colors = {
+  GREEN: "#c2f37d",
+  BLUE: "#7de1f3",
+  RED: "#f37d7d",
+  YELLOW: "#f3db7d",
+  PURPLE: "#e77df3",
+};
+
 const model = {
   notes: [],
   counterOfTask: 0,
+  isViewOnlyFavouriteNotes: false,
   addNote(noteTitle, noteDescription, noteColor) {
+    if (noteColor === "yellow") {
+      noteColor = colors.YELLOW;
+    } else if (noteColor === "green") {
+      noteColor = colors.GREEN;
+    } else if (noteColor === "blue") {
+      noteColor = colors.BLUE;
+    } else if (noteColor === "red") {
+      noteColor = colors.RED;
+    } else if (noteColor === "purple") {
+      noteColor = colors.PURPLE;
+    }
     const note = {
       id: new Date().getTime(),
       noteTitle: noteTitle,
@@ -10,13 +30,13 @@ const model = {
       noteColor: noteColor,
       isFavourite: false,
     };
-    if (this.counterOfTask === 0) {
-      view.renderFavouriteNoteCheckbox();
+    this.counterOfTask += 1;
+    if (this.counterOfTask === 1) {
+      view.renderFavouriteNoteCheckbox(this.counterOfTask);
       view.EmptyNoteView();
     }
-    this.counterOfTask += 1;
     this.notes.push(note);
-    view.renderNotes(note);
+    view.renderNotes(this.notes);
     view.renderQuantityofNotes(this.counterOfTask);
     view.TooltipNoteisAddView();
   },
@@ -45,14 +65,29 @@ const model = {
   },
   deleteNote(noteId) {
     this.counterOfTask -= 1;
-    this.notes.forEach((item) => {
-      if (+item.id == +noteId) {
-        alert(noteId);
-        view.deleteNote(item);
-      }
-      return item;
+    if (this.counterOfTask === 0) {
+      view.renderEmptyNote();
+
+      view.renderFavouriteNoteCheckbox(this.counterOfTask);
+    }
+    this.notes = this.notes.filter((item) => {
+      return +item.id !== noteId;
     });
+    view.TooltipNoteisDeleteView();
     view.renderQuantityofNotes(this.counterOfTask);
+    view.renderNotes(this.notes);
+  },
+  viewOnlyFavouriteNotes() {
+    this.isViewOnlyFavouriteNotes = !this.isViewOnlyFavouriteNotes;
+
+    if (this.isViewOnlyFavouriteNotes) {
+      const arrayOnlyFav = this.notes.filter((note) => {
+        return note.isFavourite === true;
+      });
+      view.renderNotes(arrayOnlyFav);
+    } else {
+      view.renderNotes(this.notes);
+    }
   },
 };
 // отображение данных: рендер списка задач, размещение обработчиков событий
@@ -76,15 +111,7 @@ const view = {
       "#note-name-block-title-input"
     );
     const noteNameDescription = document.querySelector("#note-name-input");
-    const radioYellow = document.querySelector('input[value="yellow"]');
-    radioYellow.checked = true;
-    const radioGreen = document.querySelector('input[value="green"]');
-    const radioBlue = document.querySelector('input[value="blue"]');
-    const radioRed = document.querySelector('input[value="red"]');
-    const radioPurple = document.querySelector('input[value="purple"]');
-    const blockFavoriteNotesCheckBox = document.querySelector(
-      ".block-favorite-notes"
-    );
+    const radioCheck = document.querySelectorAll(".radio");
     const noteBlockImg = document.querySelector(".notes");
 
     noteEntryBlock.addEventListener("submit", function (event) {
@@ -92,19 +119,12 @@ const view = {
       const noteTitle = noteNameBlock.value;
       const noteDescription = noteNameDescription.value;
       let noteColor;
-      if (radioYellow.checked) {
-        noteColor = radioYellow.value;
-      } else if (radioGreen.checked) {
-        noteColor = radioGreen.value;
-      } else if (radioBlue.checked) {
-        noteColor = radioBlue.value;
-      } else if (radioRed.checked) {
-        noteColor = radioRed.value;
-      } else if (radioPurple.checked) {
-        noteColor = radioPurple.value;
-      }
-
-      controller.addNote(noteTitle, noteDescription, noteColor);
+      radioCheck.forEach((item) => {
+        if (item.checked) {
+          noteColor = item.value;
+          controller.addNote(noteTitle, noteDescription, noteColor);
+        }
+      });
 
       noteNameBlock.value = ""; // Очищаем поле ввода
       noteNameDescription.value = "";
@@ -120,84 +140,46 @@ const view = {
         controller.deleteNote(noteId);
       }
     });
-    blockFavoriteNotesCheckBox.addEventListener("click", (event) => {
-      if (event.target.classList.contains("checkbox")) {
-        alert("я нажал чекбокс");
-      }
-    });
-  },
-  renderNotes(note) {
-    const notes = document.querySelector(".notes");
-    const newNote = document.createElement("div");
-    newNote.classList.add("new-note");
-    newNote.id = note.id;
-    const newNoteTitle = document.createElement("div");
-    newNoteTitle.classList.add("new-note-title", note.noteColor);
-    newNoteTitle.id = note.id;
-    newNote.append(newNoteTitle);
-    const newNoteTitleName = document.createElement("div");
-    newNoteTitleName.classList.add("new-note-title-name");
-    newNoteTitleName.id = note.id;
-    newNoteTitle.append(newNoteTitleName);
-    const newNoteTitleParagraph = document.createElement("p");
-    newNoteTitleParagraph.textContent = note.noteTitle;
-    const newNoteTitleIconsBlock = document.createElement("div");
-    newNoteTitleIconsBlock.id = note.id;
-    const favouriteNoteImg = document.createElement("img");
-    favouriteNoteImg.id = note.id;
-    favouriteNoteImg.classList.add("favourite-note-img");
-    !note.isFavourite
-      ? (favouriteNoteImg.src = "assets/heart inactive.png")
-      : (favouriteNoteImg.src = "assets/heart active.png");
-    favouriteNoteImg.alt = "Favorite notes";
-    const trashImg = document.createElement("img");
-    trashImg.id = note.id;
-    trashImg.classList.add("trash-img");
-    trashImg.src = "assets/trash.png";
-    trashImg.alt = "Delete note";
-    newNoteTitleIconsBlock.append(favouriteNoteImg, trashImg);
-    newNoteTitleName.append(newNoteTitleParagraph, newNoteTitleIconsBlock);
-    const newNoteDescription = document.createElement("p");
-    newNoteDescription.classList.add("new-note-description");
-    newNoteDescription.textContent = note.noteDescription;
-    newNote.append(newNoteTitle, newNoteDescription);
-    notes.prepend(newNote);
   },
 
-  renderFavouriteNotes(note) {
+  renderNotes(notesArray) {
     const notes = document.querySelector(".notes");
-    const newNote = document.createElement("div");
-    newNote.classList.add("new-note");
-    newNote.id = note.id;
-    const newNoteTitle = document.createElement("div");
-    newNoteTitle.classList.add("new-note-title", note.noteColor);
-    newNoteTitle.id = note.id;
-    newNote.append(newNoteTitle);
-    const newNoteTitleName = document.createElement("div");
-    newNoteTitleName.classList.add("new-note-title-name");
-    newNoteTitleName.id = note.id;
-    newNoteTitle.append(newNoteTitleName);
-    const newNoteTitleParagraph = document.createElement("p");
-    newNoteTitleParagraph.textContent = note.noteTitle;
-    const newNoteTitleIconsBlock = document.createElement("div");
-    newNoteTitleIconsBlock.id = note.id;
-    const favouriteNoteImg = document.createElement("img");
-    favouriteNoteImg.id = note.id;
-    favouriteNoteImg.classList.add("favourite-note-img");
-    favouriteNoteImg.src = "assets/heart active.png";
-    favouriteNoteImg.alt = "Favorite notes";
-    const trashImg = document.createElement("img");
-    trashImg.id = note.id;
-    trashImg.classList.add("trash-img");
-    trashImg.src = "assets/trash.png";
-    trashImg.alt = "Delete note";
-    newNoteTitleIconsBlock.append(favouriteNoteImg, trashImg);
-    newNoteTitleName.append(newNoteTitleParagraph, newNoteTitleIconsBlock);
-    const newNoteDescription = document.createElement("p");
-    newNoteDescription.classList.add("new-note-description");
-    newNoteDescription.textContent = note.noteDescription;
-    newNote.append(newNoteTitle, newNoteDescription);
-    notes.prepend(newNote);
+    let newNoteHTML = "";
+
+    notesArray.forEach((note) => {
+      newNoteHTML += `
+    <li class="new-note" id="${note.id}">
+      <div class="new-note-title" id="${note.id}" style="background-color: ${
+        note.noteColor
+      }">
+        <div class="new-note-title-name" id="${note.id}">
+          <p>${note.noteTitle}</p>
+          <div id="${note.id}">
+            <img 
+              id="${note.id}" 
+              class="favourite-note-img" 
+              src="${
+                note.isFavourite
+                  ? "assets/heart active.png"
+                  : "assets/heart inactive.png"
+              }" 
+              alt="Favorite notes" 
+            />
+            <img 
+              id="${note.id}" 
+              class="trash-img" 
+              src="assets/trash.png" 
+              alt="Delete note" 
+            />
+          </div>
+        </div>
+      </div>
+      <p class="new-note-description">${note.noteDescription}</p>
+    </li>
+  `;
+    });
+
+    notes.innerHTML = newNoteHTML;
   },
 
   renderEmptyNote() {
@@ -206,26 +188,40 @@ const view = {
     emptyNote.classList.add("empty-note");
     emptyNote.textContent =
       "У вас ещё нет ни одной заметки. Заполните поля выше и создайте свою первую заметку!";
-    notes.append(emptyNote);
+    notes.before(emptyNote);
   },
 
-  renderFavouriteNoteCheckbox() {
-    const noteEntryBlock = document.querySelector(".note-entry-block");
-    const blockFavoriteNotes = document.createElement("div");
-    blockFavoriteNotes.classList.add("block-favorite-notes");
-    blockFavoriteNotes.innerHTML = `<label class="favorite-notes">
-            <input
-              class="checkbox"
-              type="checkbox"
-              name="checkbox"
-              value="checkbox"
-              id="checkbox"
-            />
-            <span class="favorite-notes-checkbox"
-              >Показать только избранные заметки</span
-            >
-          </label>`;
-    noteEntryBlock.after(blockFavoriteNotes);
+  renderFavouriteNoteCheckbox(counterOfTask) {
+    if (counterOfTask > 0) {
+      const noteEntryBlock = document.querySelector(".note-entry-block");
+      const blockFavoriteNotes = document.createElement("div");
+      blockFavoriteNotes.classList.add("block-favorite-notes");
+      const FavoriteNotesLabel = document.createElement("label");
+      FavoriteNotesLabel.classList.add("favorite-notes");
+      blockFavoriteNotes.append(FavoriteNotesLabel);
+      const FavoriteNotesInput = document.createElement("input");
+      FavoriteNotesInput.classList.add("checkbox");
+      FavoriteNotesInput.type = "checkbox";
+      FavoriteNotesInput.name = "checkbox";
+      FavoriteNotesInput.value = "checkbox";
+      FavoriteNotesInput.id = "checkbox";
+      const FavoriteNotesCheckboxTitle = document.createElement("span");
+      FavoriteNotesCheckboxTitle.classList.add("favorite-notes-checkbox");
+      FavoriteNotesCheckboxTitle.textContent =
+        "Показать только избранные заметки";
+      FavoriteNotesLabel.append(FavoriteNotesInput, FavoriteNotesCheckboxTitle);
+      noteEntryBlock.after(blockFavoriteNotes);
+      blockFavoriteNotes.addEventListener("click", (event) => {
+        if (event.target.type === "checkbox") {
+          controller.viewOnlyFavouriteNotes();
+        }
+      });
+    } else {
+      const blockFavoriteNotes = document.querySelector(
+        ".block-favorite-notes"
+      );
+      blockFavoriteNotes.remove();
+    }
   },
 
   renderQuantityofNotes(counterOfTask) {
@@ -342,7 +338,7 @@ const view = {
 
   EmptyNoteView() {
     const emptyNote = document.querySelector(".empty-note");
-    emptyNote.classList.toggle("invisible");
+    emptyNote.remove();
   },
 
   favouriteNoteView(note) {
@@ -384,6 +380,9 @@ const controller = {
   },
   deleteNote(noteId) {
     model.deleteNote(noteId);
+  },
+  viewOnlyFavouriteNotes() {
+    model.viewOnlyFavouriteNotes();
   },
 };
 
