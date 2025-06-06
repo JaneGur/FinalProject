@@ -291,11 +291,17 @@ fieldset {
 
 /*=====Добавление новых заметок=====*/
 
-.notes {
+/*.notes {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(368px, 1fr));
-  /* grid-template-columns: repeat(3, 1fr); */
+  /* grid-template-columns: repeat(3, 1fr); 
   gap: 24px;
+}*/
+
+.notes {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .new-note {

@@ -28,60 +28,98 @@
         </div>
       </header>
 
-      <div class="container">
-        <form method="get" class="note-entry-block">
-          <div class="note-name-block">
-            <label for="note-name-block-title-input"
-              >Название заметки
-              <input
-                type="text"
-                placeholder="Напишите название новой заметки..."
-                id="note-name-block-title-input"
-              />
-            </label>
-          </div>
-
-          <div class="note-description-block">
-            <label for="note-name-input" class="note-name"
-              >Описание новой заметки
-              <textarea
-                name="note-name-input"
-                placeholder="Напишите описание новой заметки..."
-                id="note-name-input"
-              ></textarea>
-            </label>
-           
-            <div class="note-color">
-              <fieldset class="fieldset">
-                <legend class="label">Выберите цвет заметки</legend>
-                <ul class="radio-list">
-                  <li>
-                    <input checked class="radio" type="radio" name="color" value="yellow" aria-label="yellow" />
-                  </li>
-                  <li>
-                    <input class="radio" type="radio" name="color" value="red" aria-label="red" />
-                  </li>
-                  <li>
-                    <input class="radio" type="radio" name="color" value="green" aria-label="green" />
-                  </li>
-                  <li>
-                    <input class="radio" type="radio" name="color" value="blue" aria-label="blue" />
-                  </li>
-                  <li>
-                    <input class="radio" type="radio" name="color" value="purple" aria-label="purple" />
-                  </li>
-                </ul>
-              </fieldset>
-              <button type="submit" class="note-color-button">
-                <b>+</b> Добавить заметку
-              </button>
+      <main>
+        <div class="container">
+          <form method="get" class="note-entry-block">
+            <div class="note-name-block">
+              <label for="note-name-block-title-input"
+                >Название заметки
+                <input
+                  type="text"
+                  placeholder="Напишите название новой заметки..."
+                  id="note-name-block-title-input"
+                />
+              </label>
             </div>
-          </div>
-        </form>
-      <ul class="notes">
-          
-      </ul>
+
+            <div class="note-description-block">
+              <label for="note-name-input" class="note-name"
+                >Описание новой заметки
+                <textarea
+                  name="note-name-input"
+                  placeholder="Напишите описание новой заметки..."
+                  id="note-name-input"
+                ></textarea>
+              </label>
+
+              <div class="note-color">
+                <fieldset class="fieldset">
+                  <legend class="label">Выберите цвет заметки</legend>
+                  <ul class="radio-list">
+                    <li>
+                      <input
+                        checked
+                        class="radio"
+                        type="radio"
+                        name="color"
+                        value="yellow"
+                        aria-label="yellow"
+                      />
+                    </li>
+                    <li>
+                      <input
+                        class="radio"
+                        type="radio"
+                        name="color"
+                        value="red"
+                        aria-label="red"
+                      />
+                    </li>
+                    <li>
+                      <input
+                        class="radio"
+                        type="radio"
+                        name="color"
+                        value="green"
+                        aria-label="green"
+                      />
+                    </li>
+                    <li>
+                      <input
+                        class="radio"
+                        type="radio"
+                        name="color"
+                        value="blue"
+                        aria-label="blue"
+                      />
+                    </li>
+                    <li>
+                      <input
+                        class="radio"
+                        type="radio"
+                        name="color"
+                        value="purple"
+                        aria-label="purple"
+                      />
+                    </li>
+                  </ul>
+                </fieldset>
+                <button type="submit" class="note-color-button">
+                  <b>+</b> Добавить заметку
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <ul class="notes"></ul>
+        </div>
+      </main>
     </section>
+<<<<<<< HEAD
     <script src="js.js"></script>
+=======
+
+    <script src="/js.js"></script>
+>>>>>>> f6027dd (fp03_06.06.2025)
   </body>
 </html>

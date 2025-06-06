@@ -8,9 +8,11 @@ const colors = {
 };
 
 const model = {
+  
   notes: [],
   counterOfTask: 0,
   isViewOnlyFavouriteNotes: false,
+
   addNote(noteTitle, noteDescription, noteColor) {
     if (noteColor === "yellow") {
       noteColor = colors.YELLOW;
@@ -36,8 +38,7 @@ const model = {
       view.EmptyNoteView();
     }
     this.notes.push(note);
-    view.renderNotes(this.notes);
-    view.renderQuantityofNotes(this.counterOfTask);
+    view.renderNotes(this.notes, this.counterOfTask);
     view.TooltipNoteisAddView();
   },
 
@@ -58,7 +59,7 @@ const model = {
     this.notes = this.notes.map((item) => {
       if (+item.id == +noteId) {
         item.isFavourite = !item.isFavourite;
-        view.favouriteNoteView(item);
+        view.renderNotes(this.notes, this.counterOfTask);
       }
       return item;
     });
@@ -67,15 +68,13 @@ const model = {
     this.counterOfTask -= 1;
     if (this.counterOfTask === 0) {
       view.renderEmptyNote();
-
       view.renderFavouriteNoteCheckbox(this.counterOfTask);
     }
     this.notes = this.notes.filter((item) => {
       return +item.id !== noteId;
     });
     view.TooltipNoteisDeleteView();
-    view.renderQuantityofNotes(this.counterOfTask);
-    view.renderNotes(this.notes);
+    view.renderNotes(this.notes, this.counterOfTask);
   },
   viewOnlyFavouriteNotes() {
     this.isViewOnlyFavouriteNotes = !this.isViewOnlyFavouriteNotes;
@@ -84,9 +83,9 @@ const model = {
       const arrayOnlyFav = this.notes.filter((note) => {
         return note.isFavourite === true;
       });
-      view.renderNotes(arrayOnlyFav);
+      view.renderNotes(arrayOnlyFav, this.counterOfTask);
     } else {
-      view.renderNotes(this.notes);
+      view.renderNotes(this.notes, this.counterOfTask);
     }
   },
 };
@@ -94,8 +93,7 @@ const model = {
 const view = {
   init() {
     // this.renderNotes({
-    //   noteTitle:
-    //     "Изучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVCИзучить паттерн MVC",
+    //   noteTitle: "Изучить паттерн MVC",
     //   noteDescription: "Изучить паттерн MVC",
     //   noteColor: "blue",
     //   isFavourite: false,
@@ -114,6 +112,8 @@ const view = {
     const radioCheck = document.querySelectorAll(".radio");
     const noteBlockImg = document.querySelector(".notes");
 
+    //Обработчик формы
+
     noteEntryBlock.addEventListener("submit", function (event) {
       event.preventDefault(); // Предотвращаем стандартное поведение формы
       const noteTitle = noteNameBlock.value;
@@ -129,6 +129,9 @@ const view = {
       noteNameBlock.value = ""; // Очищаем поле ввода
       noteNameDescription.value = "";
     });
+
+    //Обработчик кнопок "добавить в избранное" и "удалить"
+
     noteBlockImg.addEventListener("click", (event) => {
       if (event.target.classList.contains("favourite-note-img")) {
         const noteId = +event.target.id;
@@ -142,8 +145,11 @@ const view = {
     });
   },
 
-  renderNotes(notesArray) {
+  //список заметок
+
+  renderNotes(notesArray, counterOfTask) {
     const notes = document.querySelector(".notes");
+    const notesQuantity = document.querySelector(".notes-quantity");
     let newNoteHTML = "";
 
     notesArray.forEach((note) => {
@@ -180,7 +186,12 @@ const view = {
     });
 
     notes.innerHTML = newNoteHTML;
+
+    notesQuantity.innerHTML = `<img src="assets/notes.png" alt="Notes quantity" />
+              <span>Всего заметок: <b>${counterOfTask}</b></span>`;
   },
+
+  //Когда заметок нет, отображаем текст: “У вас ещё нет ни одной заметки. Заполните поля выше и создайте свою первую заметку!”
 
   renderEmptyNote() {
     const notes = document.querySelector(".notes");
@@ -190,6 +201,8 @@ const view = {
       "У вас ещё нет ни одной заметки. Заполните поля выше и создайте свою первую заметку!";
     notes.before(emptyNote);
   },
+
+  //Чек-бокс "Показать только избранные заметки"
 
   renderFavouriteNoteCheckbox(counterOfTask) {
     if (counterOfTask > 0) {
@@ -224,11 +237,7 @@ const view = {
     }
   },
 
-  renderQuantityofNotes(counterOfTask) {
-    const notesQuantity = document.querySelector(".notes-quantity");
-    notesQuantity.innerHTML = `<img src="assets/notes.png" alt="Notes quantity" />
-              <span>Всего заметок: <b>${counterOfTask}</b></span>`;
-  },
+  //Информационные сообщения
 
   renderTooltipError() {
     const TooltipError = document.createElement("div");
@@ -300,6 +309,8 @@ const view = {
     noteEntryBlock.after(TooltipNoteisDelete);
   },
 
+  //Показываем и скрываем информационные сообщения
+
   TooltipErrorView() {
     const tooltipError = document.querySelector(".tooltip-error");
     tooltipError.classList.toggle("invisible");
@@ -340,25 +351,6 @@ const view = {
     const emptyNote = document.querySelector(".empty-note");
     emptyNote.remove();
   },
-
-  favouriteNoteView(note) {
-    const favouriteNote = document.querySelectorAll(".favourite-note-img");
-    favouriteNote.forEach((item) => {
-      if (+item.getAttribute("id") === note.id) {
-        note.isFavourite
-          ? (item.src = "assets/heart active.png")
-          : (item.src = "assets/heart inactive.png");
-      }
-    });
-  },
-  deleteNote(note) {
-    const deleteNote = document.querySelectorAll(".new-note");
-    deleteNote.forEach((item) => {
-      if (+item.getAttribute("id") === note.id) {
-        item.remove();
-      }
-    });
-  },
 };
 
 // обработка действий пользователя, обновление модели
@@ -386,14 +378,4 @@ const controller = {
   },
 };
 
-// view.renderEmptyNote();
 view.init();
-
-// Функция инициализации
-// function init() {
-// view.renderTitleLengthWarning();
-//     // здесь может быть код инициализации других модулей
-// }
-//
-// // Вызов функции инициализации при загрузке страницы
-// init()
