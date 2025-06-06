@@ -8,7 +8,6 @@ const colors = {
 };
 
 const model = {
-  
   notes: [],
   counterOfTask: 0,
   isViewOnlyFavouriteNotes: false,
@@ -152,12 +151,15 @@ const view = {
     const notesQuantity = document.querySelector(".notes-quantity");
     let newNoteHTML = "";
 
-    notesArray.forEach((note) => {
-      newNoteHTML += `
+    notesArray
+      .slice()
+      .reverse()
+      .forEach((note) => {
+        newNoteHTML += `
     <li class="new-note" id="${note.id}">
       <div class="new-note-title" id="${note.id}" style="background-color: ${
-        note.noteColor
-      }">
+          note.noteColor
+        }">
         <div class="new-note-title-name" id="${note.id}">
           <p>${note.noteTitle}</p>
           <div id="${note.id}">
@@ -183,7 +185,7 @@ const view = {
       <p class="new-note-description">${note.noteDescription}</p>
     </li>
   `;
-    });
+      });
 
     notes.innerHTML = newNoteHTML;
 

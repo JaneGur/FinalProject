@@ -389,12 +389,14 @@ fieldset {
   background: #f23d5b;
   width: 427px;
   height: 48px;
+  bottom: 98px;
 }
 
 .tooltip-error-field-empty {
   background: #f23d5b;
   width: 300px;
   height: 48px;
+  bottom: 98px;
 }
 .tooltip-note-is-added,
 .tooltip-note-is-delete {
