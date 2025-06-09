@@ -1,9 +1,3 @@
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
 body {
   font-family: "Montserrat", sans-serif;
 }
@@ -96,7 +90,7 @@ textarea::placeholder {
 }
 
 input[type="text"] {
-  font-family: inherit;
+  /* font-family: inherit; */
   border: 1px solid #e8e8e8;
   border-radius: 10px;
   padding: 6px 12px;
@@ -121,7 +115,7 @@ input[type="text"] {
 }
 
 textarea {
-  font-family: inherit;
+  /* font-family: inherit; */
   border: 1px solid #e8e8e8;
   border-radius: 10px;
   padding: 6px 12px;
@@ -191,53 +185,6 @@ fieldset {
   box-shadow: 0 0 0 3px white, 0 0 0 4.5px #007bff;
 }
 
-/* 
-
-.radio-container {
-  display: flex;
-  max-width: 212px;
-  min-height: 36px;
-  justify-content: space-around;
-}
-
-.radio {
-  appearance: none;
-  display: inline-block;
-  position: relative;
-  height: 24px;
-  width: 24px;
-  border-radius: 20px;
-  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.1);
-  cursor: pointer;
-  outline: none;
-  transition: 0.5s all;
-}*/
-
-/* .radio:checked {
-  transform: scale(1.2);
-  box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.2);
-}
-
-.yellow {
-  background-color: #f3db7d;
-}
-
-.green {
-  background-color: #c2f37d;
-}
-
-.blue {
-  background-color: #7de1f3;
-}
-
-.red {
-  background-color: #f37d7d;
-}
-
-.purple {
-  background-color: #e77df3;
-}  */
-
 /*=====Кнопка добавления заметки=====*/
 
 .note-color-button {
@@ -290,13 +237,6 @@ fieldset {
 }
 
 /*=====Добавление новых заметок=====*/
-
-/*.notes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(368px, 1fr));
-  /* grid-template-columns: repeat(3, 1fr); 
-  gap: 24px;
-}*/
 
 .notes {
   display: flex;
@@ -390,6 +330,15 @@ fieldset {
   width: 427px;
   height: 48px;
   bottom: 98px;
+  animation: shake 0.5s ease;
+}
+
+.tooltip-error-description {
+  background: #f23d5b;
+  width: 457px;
+  height: 48px;
+  bottom: 98px;
+  animation: shake 0.5s ease;
 }
 
 .tooltip-error-field-empty {
@@ -397,14 +346,49 @@ fieldset {
   width: 300px;
   height: 48px;
   bottom: 98px;
+  animation: shake 0.5s ease;
 }
 .tooltip-note-is-added,
 .tooltip-note-is-delete {
   background: #47b27d;
   width: 230px;
   height: 48px;
+  animation: pulse 3s ease-in-out;
 }
 
 .invisible {
   display: none;
 }
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.05);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  75% {
+    transform: scale(1.02);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  50% {
+    transform: translateX(5px);
+  }
+  75% {
+    transform: translateX(-5px);
+  }
+}
+

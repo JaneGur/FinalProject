@@ -1,4 +1,16 @@
 // хранение данных, бизнес-логика
+
+const MOCK_NOTES = [
+  {
+    id: 1,
+    noteTitle: "Работа с формами",
+    noteDescription:
+      "К определённым полям формы можно обратиться через form.elements по значению, указанному в атрибуте name",
+    noteColor: "#c2f37d",
+    isFavourite: false,
+  },
+];
+
 const colors = {
   GREEN: "#c2f37d",
   BLUE: "#7de1f3",
@@ -8,8 +20,8 @@ const colors = {
 };
 
 const model = {
-  notes: [],
-  counterOfTask: 0,
+  notes: MOCK_NOTES,
+  counterOfTask: 1,
   isViewOnlyFavouriteNotes: false,
 
   addNote(noteTitle, noteDescription, noteColor) {
@@ -37,12 +49,23 @@ const model = {
       view.EmptyNoteView();
     }
     this.notes.push(note);
-    view.renderNotes(this.notes, this.counterOfTask);
-    view.TooltipNoteisAddView();
+    if (this.isViewOnlyFavouriteNotes) {
+      const arrayOnlyFav = this.notes.filter((note) => {
+        return note.isFavourite === true;
+      });
+      view.renderNotes(arrayOnlyFav, this.counterOfTask);
+      view.TooltipNoteisAddView();
+    } else {
+      view.renderNotes(this.notes, this.counterOfTask);
+      view.TooltipNoteisAddView();
+    }
   },
 
   addTooltipError() {
     view.TooltipErrorView();
+  },
+  addTooltipErrorDescription() {
+    view.TooltipErrorDescriptionView();
   },
   addTooltipErrorFieldEmpty() {
     view.TooltipErrorFieldEmptyView();
@@ -73,7 +96,16 @@ const model = {
       return +item.id !== noteId;
     });
     view.TooltipNoteisDeleteView();
-    view.renderNotes(this.notes, this.counterOfTask);
+    if (this.isViewOnlyFavouriteNotes) {
+      const arrayOnlyFav = this.notes.filter((note) => {
+        return note.isFavourite === true;
+      });
+      view.renderNotes(arrayOnlyFav, this.counterOfTask);
+      view.TooltipNoteisAddView();
+    } else {
+      view.renderNotes(this.notes, this.counterOfTask);
+      view.TooltipNoteisAddView();
+    }
   },
   viewOnlyFavouriteNotes() {
     this.isViewOnlyFavouriteNotes = !this.isViewOnlyFavouriteNotes;
@@ -91,14 +123,10 @@ const model = {
 // отображение данных: рендер списка задач, размещение обработчиков событий
 const view = {
   init() {
-    // this.renderNotes({
-    //   noteTitle: "Изучить паттерн MVC",
-    //   noteDescription: "Изучить паттерн MVC",
-    //   noteColor: "blue",
-    //   isFavourite: false,
-    // });
-    this.renderEmptyNote();
+    this.renderNotes(model.notes, model.counterOfTask);
+    this.renderFavouriteNoteCheckbox(model.counterOfTask);
     this.renderTooltipError();
+    this.renderTooltipErrorDescription();
     this.renderTooltipNoteisDelete();
     this.renderTooltipNoteisAdded();
     this.renderTooltipErrorFieldEmpty();
@@ -254,6 +282,23 @@ const view = {
     noteEntryBlock.after(TooltipError);
   },
 
+  renderTooltipErrorDescription() {
+    const TooltipError = document.createElement("div");
+    TooltipError.classList.add(
+      "tooltip",
+      "tooltip-error-description",
+      "invisible"
+    );
+    const noteEntryBlock = document.querySelector(".note-entry-block");
+    const TooltipErrorMessage = document.createElement("span");
+    TooltipErrorMessage.textContent =
+      "Максимальная длина описания - 250 символов";
+    const TooltipErrorIcon = document.createElement("img");
+    TooltipErrorIcon.src = "assets/warning.png";
+    TooltipError.append(TooltipErrorIcon, TooltipErrorMessage);
+    noteEntryBlock.after(TooltipError);
+  },
+
   renderTooltipErrorFieldEmpty() {
     const TooltipErrorFieldEmpty = document.createElement("div");
     TooltipErrorFieldEmpty.classList.add(
@@ -331,6 +376,14 @@ const view = {
     }, 3000);
   },
 
+  TooltipErrorDescriptionView() {
+    const tooltipError = document.querySelector(".tooltip-error-description");
+    tooltipError.classList.toggle("invisible");
+    setTimeout(() => {
+      tooltipError.classList.toggle("invisible");
+    }, 3000);
+  },
+
   TooltipNoteisAddView() {
     const TooltipNoteisAdd = document.querySelector(".tooltip-note-is-added");
     TooltipNoteisAdd.classList.toggle("invisible");
@@ -358,15 +411,14 @@ const view = {
 // обработка действий пользователя, обновление модели
 const controller = {
   addNote(noteTitle, noteDescription, noteColor) {
-    if (
-      String(noteTitle).trim().length === 0 ||
-      String(noteDescription).trim().length === 0
-    ) {
+    if (noteTitle.trim().length === 0 || noteDescription.trim().length === 0) {
       model.addTooltipErrorFieldEmpty();
+    } else if (noteTitle.trim().length > 50) {
+      model.addTooltipError();
+    } else if (noteDescription.trim().length > 150) {
+      model.addTooltipErrorDescription();
     } else {
-      String(noteTitle).trim().length > 50
-        ? model.addTooltipError()
-        : model.addNote(noteTitle, noteDescription, noteColor);
+      model.addNote(noteTitle, noteDescription, noteColor);
     }
   },
   addFavouriteNote(noteId) {
