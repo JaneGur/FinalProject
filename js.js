@@ -232,8 +232,8 @@ const view = {
     const notes = document.querySelector(".notes");
     const emptyNote = document.createElement("p");
     emptyNote.classList.add("empty-note");
-    emptyNote.textContent =
-      "У вас ещё нет ни одной заметки. Заполните поля выше и создайте свою первую заметку!";
+    emptyNote.innerHTML =
+      "У вас ещё нет ни одной заметки.<br> Заполните поля выше и создайте свою первую заметку!";
     notes.before(emptyNote);
   },
 
