@@ -53,7 +53,7 @@ const model = {
       const arrayOnlyFav = this.notes.filter((note) => {
         return note.isFavourite === true;
       });
-      view.renderNotes(arrayOnlyFav, this.counterOfTask);
+      view.renderNotes(arrayOnlyFav, arrayOnlyFav.length);
       view.TooltipNoteisAddView();
     } else {
       view.renderNotes(this.notes, this.counterOfTask);
@@ -100,7 +100,7 @@ const model = {
       const arrayOnlyFav = this.notes.filter((note) => {
         return note.isFavourite === true;
       });
-      view.renderNotes(arrayOnlyFav, this.counterOfTask);
+      view.renderNotes(arrayOnlyFav, arrayOnlyFav.length);
       view.TooltipNoteisAddView();
     } else {
       view.renderNotes(this.notes, this.counterOfTask);
@@ -114,7 +114,7 @@ const model = {
       const arrayOnlyFav = this.notes.filter((note) => {
         return note.isFavourite === true;
       });
-      view.renderNotes(arrayOnlyFav, this.counterOfTask);
+      view.renderNotes(arrayOnlyFav, arrayOnlyFav.length);
     } else {
       view.renderNotes(this.notes, this.counterOfTask);
     }
@@ -217,8 +217,13 @@ const view = {
 
     notes.innerHTML = newNoteHTML;
 
-    notesQuantity.innerHTML = `<img src="assets/notes.png" alt="Notes quantity" />
+    if (model.isViewOnlyFavouriteNotes) {
+      notesQuantity.innerHTML = `<img src="assets/notes.png" alt="Notes quantity" />
+              <span>Всего избранных заметок: <b>${counterOfTask}</b></span>`;
+    } else {
+      notesQuantity.innerHTML = `<img src="assets/notes.png" alt="Notes quantity" />
               <span>Всего заметок: <b>${counterOfTask}</b></span>`;
+    }
   },
 
   //Когда заметок нет, отображаем текст: “У вас ещё нет ни одной заметки. Заполните поля выше и создайте свою первую заметку!”
