@@ -81,88 +81,46 @@ const model = {
     };
 
     this.notes.push(note);
-
-    if (this.isViewOnlyFavouriteNotes) {
-      const arrayOnlyFav = this.notes.filter((note) => {
-        return note.isFavourite === true;
-      });
-      view.renderNotes(
-        arrayOnlyFav,
-        arrayOnlyFav.length,
-        this.isViewOnlyFavouriteNotes
-      );
-      view.renderNotesCount(arrayOnlyFav.length, this.isViewOnlyFavouriteNotes);
-    } else {
-      view.renderNotes(
-        this.notes,
-        this.notes.length,
-        this.isViewOnlyFavouriteNotes
-      );
-      view.renderNotesCount(this.notes.length, this.isViewOnlyFavouriteNotes);
-    }
+    this.updateNotesView();
   },
 
   deleteNote(noteId) {
     this.notes = this.notes.filter((item) => {
       return +item.id !== noteId;
     });
-
-    if (this.isViewOnlyFavouriteNotes) {
-      const arrayOnlyFav = this.notes.filter((note) => {
-        return note.isFavourite === true;
-      });
-      view.renderNotes(
-        arrayOnlyFav,
-        arrayOnlyFav.length,
-        this.isViewOnlyFavouriteNotes
-      );
-      view.renderNotesCount(arrayOnlyFav.length, this.isViewOnlyFavouriteNotes);
-    } else {
-      view.renderNotes(
-        this.notes,
-        this.notes.length,
-        this.isViewOnlyFavouriteNotes
-      );
-      view.renderNotesCount(this.notes.length, this.isViewOnlyFavouriteNotes);
-    }
+    this.updateNotesView();
   },
 
-  addFavouriteNote(noteId) {
+  updateNotesView() {
+    let notesToRender;
+    if (this.isViewOnlyFavouriteNotes) {
+      notesToRender = this.notes.filter((note) => {
+        return note.isFavourite === true;
+      });
+    } else {
+      notesToRender = this.notes;
+    }
+    view.renderNotes(
+      notesToRender,
+      notesToRender.length,
+      this.isViewOnlyFavouriteNotes
+    );
+    view.renderNotesCount(notesToRender.length, this.isViewOnlyFavouriteNotes);
+  },
+
+  toggleFavouriteNote(noteId) {
     this.notes = this.notes.map((item) => {
       if (+item.id == +noteId) {
         item.isFavourite = !item.isFavourite;
       }
       return item;
     });
-    view.renderNotes(
-      this.notes,
-      this.notes.length,
-      this.isViewOnlyFavouriteNotes
-    );
-    view.renderNotesCount(this.notes.length, this.isViewOnlyFavouriteNotes);
+    this.updateNotesView();
   },
 
-  viewOnlyFavouriteNotes() {
+  toggleShowOnlyFavorite() {
     this.isViewOnlyFavouriteNotes = !this.isViewOnlyFavouriteNotes;
-
-    if (this.isViewOnlyFavouriteNotes) {
-      const arrayOnlyFav = this.notes.filter((note) => {
-        return note.isFavourite === true;
-      });
-      view.renderNotes(
-        arrayOnlyFav,
-        arrayOnlyFav.length,
-        this.isViewOnlyFavouriteNotes
-      );
-      view.renderNotesCount(arrayOnlyFav.length, this.isViewOnlyFavouriteNotes);
-    } else {
-      view.renderNotes(
-        this.notes,
-        this.notes.length,
-        this.isViewOnlyFavouriteNotes
-      );
-      view.renderNotesCount(this.notes.length, this.isViewOnlyFavouriteNotes);
-    }
+    this.updateNotesView();
   },
 };
 // отображение данных: рендер списка задач, размещение обработчиков событий
@@ -207,7 +165,7 @@ const view = {
     noteBlockImg.addEventListener("click", (event) => {
       if (event.target.classList.contains("favourite-note-img")) {
         const noteId = +event.target.id;
-        controller.addFavouriteNote(noteId);
+        controller.toggleFavouriteNote(noteId);
       }
 
       if (event.target.classList.contains("trash-img")) {
@@ -230,11 +188,9 @@ const view = {
       .reverse()
       .forEach((note) => {
         newNoteHTML += `
-    <li class="new-note" id="${note.id}">
-      <div class="new-note-title" id="${note.id}" style="background-color: ${
-          note.noteColor
-        }">
-        <div class="new-note-title-name" id="${note.id}">
+    <li class="new-note">
+      <div class="new-note-title" style="background-color: ${note.noteColor}">
+        <div class="new-note-title-name">
           <p>${note.noteTitle}</p>
           <div id="${note.id}">
             <img 
@@ -286,7 +242,7 @@ const view = {
       emptyNote?.remove();
       blockFavoriteNotes.addEventListener("click", (event) => {
         if (event.target.type === "checkbox") {
-          controller.viewOnlyFavouriteNotes();
+          controller.toggleShowOnlyFavorite();
         }
       });
     } else if (counterOfTask < 1 && !isViewOnlyFavouriteNotes) {
@@ -330,7 +286,7 @@ const view = {
   },
 
   //Показываем и скрываем информационные сообщения
-  
+
   showMessage(tooltipClass) {
     const tooltip = document.querySelector(tooltipClass);
     tooltip.classList.toggle("invisible");
@@ -354,15 +310,15 @@ const controller = {
       view.showMessage(tooltipClasses.successAdd);
     }
   },
-  addFavouriteNote(noteId) {
-    model.addFavouriteNote(noteId);
+  toggleFavouriteNote(noteId) {
+    model.toggleFavouriteNote(noteId);
   },
   deleteNote(noteId) {
     model.deleteNote(noteId);
     view.showMessage(tooltipClasses.successDelete);
   },
-  viewOnlyFavouriteNotes() {
-    model.viewOnlyFavouriteNotes();
+  toggleShowOnlyFavorite() {
+    model.toggleShowOnlyFavorite();
   },
 };
 
