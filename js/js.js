@@ -61,17 +61,24 @@ const model = {
   isViewOnlyFavouriteNotes: false,
 
   addNote(noteTitle, noteDescription, noteColor) {
-    if (noteColor === "yellow") {
-      noteColor = colors.YELLOW;
-    } else if (noteColor === "green") {
-      noteColor = colors.GREEN;
-    } else if (noteColor === "blue") {
-      noteColor = colors.BLUE;
-    } else if (noteColor === "red") {
-      noteColor = colors.RED;
-    } else if (noteColor === "purple") {
-      noteColor = colors.PURPLE;
+    switch (noteColor) {
+      case "yellow":
+        noteColor = colors.YELLOW;
+        break;
+      case "green":
+        noteColor = colors.GREEN;
+        break;
+      case "blue":
+        noteColor = colors.BLUE;
+        break;
+      case "red":
+        noteColor = colors.RED;
+        break;
+      case "purple":
+        noteColor = colors.PURPLE;
+        break;
     }
+
     const note = {
       id: new Date().getTime(),
       noteTitle: noteTitle,
