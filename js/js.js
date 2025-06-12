@@ -110,7 +110,7 @@ const model = {
 
   toggleFavouriteNote(noteId) {
     this.notes = this.notes.map((item) => {
-      if (+item.id == +noteId) {
+      if (item.id === noteId) {
         item.isFavourite = !item.isFavourite;
       }
       return item;
