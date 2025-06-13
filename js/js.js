@@ -1,5 +1,3 @@
-// хранение данных, бизнес-логика
-
 const MOCK_NOTES = [
   {
     id: 1,
@@ -162,9 +160,6 @@ const view = {
           controller.addNote(noteTitle, noteDescription, noteColor);
         }
       });
-
-      noteNameBlock.value = ""; // Очищаем поле ввода
-      noteNameDescription.value = "";
     });
 
     //Обработчик кнопок "добавить в избранное" и "удалить"
@@ -306,6 +301,11 @@ const view = {
 // обработка действий пользователя, обновление модели
 const controller = {
   addNote(noteTitle, noteDescription, noteColor) {
+    const noteNameBlock = document.querySelector(
+      "#note-name-block-title-input"
+    );
+    const noteNameDescription = document.querySelector("#note-name-input");
+    const radioCheck = document.querySelectorAll(".radio");
     if (noteTitle.trim().length === 0 || noteDescription.trim().length === 0) {
       view.showMessage(tooltipClasses.errorFieldEmpty);
     } else if (noteTitle.trim().length > 50) {
@@ -315,6 +315,13 @@ const controller = {
     } else {
       model.addNote(noteTitle, noteDescription, noteColor);
       view.showMessage(tooltipClasses.successAdd);
+      noteNameBlock.value = ""; // Очищаем поле ввода
+      noteNameDescription.value = "";
+      radioCheck.forEach((item) => {
+        if (item.value === "yellow") {
+          item.checked = true;
+        }
+      });
     }
   },
   toggleFavouriteNote(noteId) {
