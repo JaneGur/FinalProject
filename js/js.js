@@ -54,7 +54,7 @@ const tooltipClasses = {
 };
 
 const model = {
-  notes: MOCK_NOTES,
+  notes: [],
   tooltipParametrs: TOOLTIP_PARAMETRS,
   isViewOnlyFavouriteNotes: false,
 
